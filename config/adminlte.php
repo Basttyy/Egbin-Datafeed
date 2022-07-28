@@ -251,6 +251,11 @@ return [
             'label'       => 4,
             'label_color' => 'success',
         ],
+        [
+            'text' => 'KPI',
+            'url'  => 'admin/kpi',
+            'icon' => 'fas fa-fw fa-user',
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',

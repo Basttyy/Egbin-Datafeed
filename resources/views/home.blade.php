@@ -8,7 +8,9 @@
 
 @section('content')
     <p>Welcome to this beautiful admin panel.</p>
-    <table id="table" class="display" width="100%"></table>
+    <table id="table" class="display" width="100%">
+   
+    </table>
 @stop
 
 
