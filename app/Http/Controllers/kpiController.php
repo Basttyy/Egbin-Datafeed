@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use App\kpi;
 
 class kpiController extends Controller
 {
@@ -38,5 +39,34 @@ class kpiController extends Controller
             return view('kpi')->with('error','unable to get data');
         }
         
+    }
+
+    public function showCreateKpi(){
+        return view('create_kpi');
+    }
+
+    public function createKpi(Request $request){
+        $request->validate([
+            'kpi_code'=>'required',
+            'kpi_name'=>'required',
+            'kpi_description'=>'required',
+            'kpi_category'=>'required',
+            
+        ]);
+
+
+
+         kpi::create([
+             'email'=> Auth::user()->email,
+             'kpi_code'=>$request->kpi_code,
+             'kpi_name'=>$request->kpi_name,
+             'kpi_description'=>$request->kpi_description,
+             'kpi_category'=>$request->kpi_category,
+         ]);
+        return redirect()->route('kpi')->with('success','KPI added succesfully');
+    }
+    public function dbkpi(){
+        $kpi = kpi::all();
+        return view('db_kpi',['kpi'=>$kpi]);
     }
 }

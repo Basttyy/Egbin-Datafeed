@@ -22,13 +22,13 @@
 
 @section('js')
     <script>
+        console.log('Hi!'); 
         var kpi = <?php echo json_encode($kpi); ?>;
         let dats = [];
 
         kpi.forEach(response => {
             console.log(response);
-            dats.push([response.kpi_name, response.kpi_code, response.description, response.kpi_category
-                   ]);
+            dats.push([response.kpi_name, response.kpi_code, response.kpi_description, response.kpi_category]);
         });
 
         $(function() {
@@ -39,7 +39,6 @@
                     { title: 'Kpi Code' },
                     { title: 'Kpi Description' },
                     { title: 'Kpi  Category' },
-                    
                 ]
             });
         });

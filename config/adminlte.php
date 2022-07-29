@@ -252,8 +252,18 @@ return [
             'label_color' => 'success',
         ],
         [
-            'text' => 'KPI',
+            'text' => 'view KPI',
             'url'  => 'admin/kpi',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+        [
+            'text' => 'Create KPI',
+            'url'  => 'admin/create-kpi',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+        [
+            'text' => 'Database KPI',
+            'url'  => 'admin/db-kpi',
             'icon' => 'fas fa-fw fa-user',
         ],
         ['header' => 'account_settings'],
@@ -269,7 +279,10 @@ return [
         ],
         [
             'text'    => 'multilevel',
-            'icon'    => 'fas fa-fw fa-share'
+            'icon'    => 'fas fa-fw fa-share',
+            'text'    => 'Logout',
+            'url'  => 'logout',
+            'icon'    => 'fas fa-fw fa-sign-out-alt'
         ]
     ],
 
