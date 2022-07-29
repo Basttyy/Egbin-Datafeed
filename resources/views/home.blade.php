@@ -35,6 +35,9 @@
         $(function() {
             $('#table').DataTable({
                 data: dats,
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
                 columns: [
                     { title: 'Metric Name' },
                     { title: 'Metric Code' },

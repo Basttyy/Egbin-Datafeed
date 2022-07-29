@@ -40,7 +40,17 @@ class HomeController extends Controller
 
         if ($resp->status() === 200) {
             return view('home')->with('metrics', $resp['data']);
-        }   else {
+        } else if ($resp->status() === 401) {   // if unauthorized then try to re-authorize
+            if (! $this->authorizeOnApi($user) ) {
+                return view('home')->with('error', 'unable to update user api token');
+            }
+            $resp = Http::withToken($user->api_token)->get(Env::get('api_base_url')."/extintegration/metrics/");
+            if ($resp->status() === 200) {
+                return view('home')->with('metrics', $resp['data']);
+            } else {
+                return view('home')->with('error', 'unable to fetch metrics');
+            }
+        } else {
             return view('home')->with('error', 'unable to fetch metrics');
         }
     }
@@ -58,5 +68,6 @@ class HomeController extends Controller
                 return false;
             } else { return true; }
         }
+        return false;
     }
 }

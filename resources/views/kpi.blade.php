@@ -27,8 +27,7 @@
 
         kpi.forEach(response => {
             console.log(response);
-            dats.push([response.kpi_name, response.kpi_code, response.kpi_description, response.kpi_category
-                   ]);
+            dats.push([response.kpi_name, response.kpi_code, response.description, response.kpi_category, response.status]);
         });
 
         $(function() {
@@ -39,7 +38,7 @@
                     { title: 'Kpi Code' },
                     { title: 'Kpi Description' },
                     { title: 'Kpi  Category' },
-                    
+                    { title: 'Status' }
                 ]
             });
         });
