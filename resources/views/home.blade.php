@@ -8,13 +8,10 @@
 
 @section('content')
     <p>Welcome to this beautiful admin panel.</p>
-    <table id="table" class="display" width="100%">
+    <table id="table" class="table table-striped table-bordered" style="width:100%">
    
     </table>
 @stop
-
-
-@section('plugins.Datatables', true)
 
 @section('css')
     <link rel="stylesheet" href="/css/admin_custom.css">
@@ -35,6 +32,10 @@
         $(function() {
             $('#table').DataTable({
                 data: dats,
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
                 columns: [
                     { title: 'Metric Name' },
                     { title: 'Metric Code' },

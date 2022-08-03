@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Metric;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Env;
@@ -55,6 +56,38 @@ class HomeController extends Controller
         }
     }
 
+    public function showCreateMetric(){
+        return view('create_metric');
+    }
+
+    public function createKpi(Request $request){
+        $request->validate([
+            'code'=>'required',
+            'type'=>'required',
+            'value'=>'required',
+            'comment'=>'required',
+            'status'=>'required',
+            'entry_type'=>'required',
+            'entryDate'=>'required'
+        ]);
+
+         Metric::create([
+             'user_id'=> Auth::user()->getAuthIdentifier(),
+             'code'=>$request->code,
+             'value'=>$request->value,
+             'type'=>$request->type,
+             'comment'=>$request->comment,
+             'status'=>$request->status,
+             'entry_type'=>$request->entry_type,
+             'entryDate'=>$request->entry_date
+         ]);
+        return redirect()->route('metrics')->with('success','Metric added succesfully');
+    }
+    public function dbkpi(){
+        $kpi = Metric::all();
+        return view('db_kpi',['kpi'=>$kpi]);
+    }
+
     private function authorizeOnApi(User $user)
     {
         $resp = Http::post(Env::get('api_base_url').'/extintegration/api/', [
@@ -70,6 +103,7 @@ class HomeController extends Controller
         }
         return false;
     }
+
     public function logout(){
         auth()->logout();
         return redirect()->route('login');

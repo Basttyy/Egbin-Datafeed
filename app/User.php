@@ -3,12 +3,13 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasRelationships;
 
     /**
      * The attributes that are mass assignable.
@@ -36,4 +37,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function metrics() {
+        return $this->hasMany(Metric::class);
+    }
+
+    public function kpis() {
+        return $this->hasMany(kpi::class);
+    }
 }

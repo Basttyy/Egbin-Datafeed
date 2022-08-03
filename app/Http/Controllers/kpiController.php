@@ -30,7 +30,7 @@ class kpiController extends Controller
                 
             }
         }
-        $response = Http::withToken($user->api_token)->get(Env::get('api_base_url')."extintegration/kpi");
+        $response = Http::withToken($user->api_token)->get(Env::get('api_base_url')."/extintegration/kpi");
 
         if($response->status() === 200){
             return view('kpi')->with('kpi', $response['data']);

@@ -8,7 +8,7 @@
 
 @section('content')
     <p>Welcome to this beautiful admin panel.</p>
-    <table id="table" class="display" width="100%">
+    <table id="table" class="table table-striped table-bordered" style="width:100%">
    
     </table>
 @stop
@@ -34,6 +34,10 @@
         $(function() {
             $('#table').DataTable({
                 data: dats,
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
                 columns: [
                     { title: 'Kpi Name' },
                     { title: 'Kpi Code' },
