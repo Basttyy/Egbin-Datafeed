@@ -97,7 +97,7 @@
     });
 
     $(function() {
-        $('#table').DataTable({
+        metriTable = $('#table').DataTable({
             data: dats,
             dom: 'Bfrtip',
             buttons: [
@@ -131,6 +131,16 @@
                     title: 'Entry Date'
                 }
             ]
+        });
+        
+        metricTable.on( 'click', 'tr', function () {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            }
+            else {
+                metricTable.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
         });
     });
 </script>

@@ -147,7 +147,7 @@
                 // smsDataSet = smsDataSet.filter(function(value, index, arr) {
                 //     return value[0] != id
                 // })
-                metricTable.row(id).remove().draw( false ) //this is not working yet make it work:
+                metricTable.row(id).remove().draw( false )
             }).catch(error => {
                 alert("Unable to disapprove metric: "+ error);
             })

@@ -31,7 +31,7 @@
     });
 
     $(function() {
-        $('#table').DataTable({
+        kpiTable = $('#table').DataTable({
             data: dats,
             dom: 'Bfrtip',
             buttons: [
@@ -51,6 +51,16 @@
                 },
 
             ]
+        });
+        
+        kpiTable.on( 'click', 'tr', function () {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            }
+            else {
+                metricTable.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
         });
     });
 </script>

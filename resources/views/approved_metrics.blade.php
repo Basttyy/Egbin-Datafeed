@@ -1,4 +1,5 @@
 @extends('adminlte::page')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 @section('title', 'Datafeed')
 
@@ -42,7 +43,7 @@
     });
 
     $(function() {
-        $('#table').DataTable({
+        metricTable = $('#table').DataTable({
             data: dats,
             dom: 'Bfrtip',
             buttons: [
@@ -72,8 +73,57 @@
                 {
                     title: 'Status'
                 },
-
+                {
+                    title: 'Disapprove'
+                }
+            ],
+            columnDefs: [
+                {
+                    targets: 8,
+                    render: function (data, type, row, meta) {
+                        return '<input type="button" class="disapprove" id=n-"' + meta.row + '" value="Disapprove"/>';
+                    }
+                }
             ]
+        });
+
+        metricTable.on('click', '.disapprove', function () {
+            var id = $(this).attr("id").match(/\d+/)[0];
+            var data = metricTable.row( id ).data();
+            console.log(data[0]);
+
+            var feature_id = $data[0];
+
+            fetch(base_url.replace('1', feature_id), {
+                method: 'PUT',
+                mode: 'cors',
+                cache: 'no-cache',
+                credentials: 'same-origin',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    item_status: 'disapproved'
+                })
+            }).then( resp => {
+                // smsDataSet = smsDataSet.filter(function(value, index, arr) {
+                //     return value[0] != id
+                // })
+                metricTable.row(id).remove().draw( false )
+            }).catch(error => {
+                alert("Unable to disapprove metric: "+ error);
+            })
+        });
+
+        metricTable.on( 'click', 'tr', function () {
+            if ( $(this).hasClass('selected') ) {
+                $(this).removeClass('selected');
+            }
+            else {
+                metricTable.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+            }
         });
     });
 </script>
