@@ -33,12 +33,13 @@
 <script>
     console.log('Hi!');
     var metrics = <?php echo json_encode($metrics); ?>;
+    var base_url = decodeURIComponent("<?php echo rawurlencode(route('update_metric', ['id' => 1])); ?>")
     let dats = [];
 
     metrics.forEach(metric => {
         console.log(metric);
-        dats.push([metric.value, metric.code, metric.comment, metric.type,
-            metric.type, metric.value, metric.value, metric.value
+        dats.push([metric.id, metric.code, metric.value, metric.description, metric.type,
+            metric.entry_type, metric.status, metric.item_status, metric.entry_date,
         ]);
     });
 
@@ -50,28 +51,31 @@
                 'copy', 'csv', 'excel', 'pdf', 'print'
             ],
             columns: [{
-                    title: 'Metric Name'
+                    title: 'Id'
                 },
                 {
-                    title: 'Metric Code'
+                    title: 'Code'
                 },
                 {
-                    title: 'Metric Description'
+                    title: 'Value'
                 },
                 {
-                    title: 'Metric Category'
+                    title: 'Description'
                 },
                 {
-                    title: 'Metric Type'
+                    title: 'Type'
                 },
                 {
-                    title: 'Unit'
-                },
-                {
-                    title: 'Unit Symbol'
+                    title: 'Entry Type'
                 },
                 {
                     title: 'Status'
+                },
+                {
+                    title: 'Item Status'
+                },
+                {
+                    title: 'Entry Date'
                 },
                 {
                     title: 'Disapprove'
@@ -79,7 +83,7 @@
             ],
             columnDefs: [
                 {
-                    targets: 8,
+                    targets: 9,
                     render: function (data, type, row, meta) {
                         return '<input type="button" class="disapprove" id=n-"' + meta.row + '" value="Disapprove"/>';
                     }
@@ -92,7 +96,7 @@
             var data = metricTable.row( id ).data();
             console.log(data[0]);
 
-            var feature_id = $data[0];
+            var feature_id = data[0];
 
             fetch(base_url.replace('1', feature_id), {
                 method: 'PUT',
