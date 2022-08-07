@@ -118,39 +118,40 @@
                 // smsDataSet = smsDataSet.filter(function(value, index, arr) {
                 //     return value[0] != id
                 // })
-                metricTable.row(feature_id).remove().draw( false )
+                metricTable.row(id).remove().draw( false )
             }).catch(error => {
                 alert("Unable to approve metric: "+ error)
             })
         })
 
-        // metricTable.on('click', '.disapprove', function () {
-        //     var id = $(this).attr("id").match(/\d+/)[0];
-        //     var data = metricTable.row( id ).data();
-        //     console.log(data[0]);
+        metricTable.on('click', '.disapprove', function () {
+            var id = $(this).attr("id").match(/\d+/)[0];
+            var data = metricTable.row( id ).data();
+            console.log(data[0]);
 
-        //     var feature_id = $data[0];
+            var feature_id = $data[0];
 
-        //     fetch(base_url.replace('1', feature_id), {
-        //         method: 'PUT',
-        //         mode: 'cors',
-        //         cache: 'no-cache',
-        //         credentials: 'same-origin',
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         },
-        //         body: JSON.stringify({
-        //             item_status: 'disapproved'
-        //         })
-        //     }).then( resp => {
-        //         // smsDataSet = smsDataSet.filter(function(value, index, arr) {
-        //         //     return value[0] != id
-        //         // })
-        //         metricTable.row(feature_id).remove().draw( false )
-        //     }).catch(error => {
-        //         alert("Unable to disapprove metric: "+ error);
-        //     })
-        // });
+            fetch(base_url.replace('1', feature_id), {
+                method: 'PUT',
+                mode: 'cors',
+                cache: 'no-cache',
+                credentials: 'same-origin',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    item_status: 'disapproved'
+                })
+            }).then( resp => {
+                // smsDataSet = smsDataSet.filter(function(value, index, arr) {
+                //     return value[0] != id
+                // })
+                metricTable.row(id).remove().draw( false ) //this is not working yet make it work:
+            }).catch(error => {
+                alert("Unable to disapprove metric: "+ error);
+            })
+        });
 
         metricTable.on( 'click', 'tr', function () {
             if ( $(this).hasClass('selected') ) {
