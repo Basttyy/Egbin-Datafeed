@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\kpiController;
+use App\Http\Controllers\MetricController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,17 +17,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index']);
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::get('admin/kpi', [App\Http\Controllers\kpiController::class, 'showKpi'])->name('kpi');
-Route::post('admin/kpi', [App\Http\Controllers\kpiController::class, 'createKpi'])->name('post_kpi');
-Route::get('admin/db-kpi', [App\Http\Controllers\kpiController::class, 'dbkpi'])->name('db_kpi');
-Route::get('admin/create-kpi', [App\Http\Controllers\kpiController::class, 'showCreateKpi'])->name('show_create_kpi');
-Route::get('logout', [App\Http\Controllers\HomeController::class, 'logout'])->name('logout');
-
+Route::get('kpi', [kpiController::class, 'showKpi'])->name('kpi');
+Route::post('metric', [MetricController::class, 'createMetric'])->name('post_metric');
+Route::get('db-metrics', [MetricController::class, 'dbMetrics'])->name('db_metrics');
+Route::get('approved-metrics', [MetricController::class, 'showApprovedMetrics'])->name('approved_metrics');
+Route::get('sync-metrics', [MetricController::class, 'showPushedMetrics'])->name('synced_metrics');
+Route::get('push-metrics', [MetricController::class, 'syncData'])->name('sync_data');
+Route::put('/metrics/{id}', [MetricController::class, 'updateMetric'])->name('update_metric');
+Route::get('admin/create-kpi', [kpiController::class, 'showCreateKpi'])->name('show_create_kpi');
+Route::get('logout', [HomeController::class, 'logout'])->name('logout');

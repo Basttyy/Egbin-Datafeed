@@ -9,10 +9,12 @@ use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\kpi;
+use App\Traits\UsesApi;
 
 class kpiController extends Controller
 {
 
+    use UsesApi;
     public function __construct()
     {
         $this->middleware('auth');
@@ -33,7 +35,7 @@ class kpiController extends Controller
         $response = Http::withToken($user->api_token)->get(Env::get('api_base_url')."/extintegration/kpi");
 
         if($response->status() === 200){
-            return view('kpi')->with('kpi', $response['data']);
+            return view('kpi')->with('kpis', $response['data']);
         }
         else{
             return view('kpi')->with('error','unable to get data');
@@ -66,7 +68,7 @@ class kpiController extends Controller
         return redirect()->route('kpi')->with('success','KPI added succesfully');
     }
     public function dbkpi(){
-        $kpi = kpi::all();
-        return view('db_kpi',['kpi'=>$kpi]);
+        $kpis = kpi::all();
+        return view('db_kpi',['kpis'=>$kpis]);
     }
 }

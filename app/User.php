@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'api_pass', 'api_token',
+        'name', 'email', 'password', 'api_pass', 'api_token','Role',
     ];
 
     /**
@@ -44,5 +44,8 @@ class User extends Authenticatable
 
     public function kpis() {
         return $this->hasMany(kpi::class);
+    }
+    public function role(){
+        $this->hasMany(Role::class);
     }
 }

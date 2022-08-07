@@ -253,23 +253,30 @@ return [
         ],
         [
             'text' => 'view KPI',
-            'url'  => 'admin/kpi',
+            'url'  => 'kpi',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+    
+        [
+            'text' => 'Database Metrics',
+            'url'  => 'db-metrics',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
-            'text' => 'Create KPI',
-            'url'  => 'admin/create-kpi',
+            'text' => 'Approved Metrics',
+            'url'  => 'approved-metrics',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
-            'text' => 'Database KPI',
-            'url'  => 'admin/db-kpi',
+            'text' => 'Uploaded Metrics',
+            'url'  => 'sync-metrics',
             'icon' => 'fas fa-fw fa-user',
         ],
+
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
-            'url'  => 'admin/settings',
+            'url'  => 'settings',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
@@ -401,8 +408,13 @@ return [
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css',
                 ],
             ],
         ],

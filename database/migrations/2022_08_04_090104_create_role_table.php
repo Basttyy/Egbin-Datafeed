@@ -1,11 +1,11 @@
 <?php
 
-use App\Metric;
+use App\Role;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Metrics extends Migration
+class CreateRoleTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,18 +14,11 @@ class Metrics extends Migration
      */
     public function up()
     {
-        Schema::create('metrics', function (Blueprint $table) {
+        Schema::create('role', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('code');
-            $table->string('type');
-            $table->unsignedBigInteger('value');
-            $table->string('description');
-            $table->string('status');
-            $table->string('entry_type');
-            $table->string('item_status')->default(Metric::SAVED);
-            $table->dateTime('entry_date');
+            $table->enum('role', [Role::USER, Role::SUPER_ADMIN, Role::ADMIN])->default('User');
             $table->timestamps();
         });
     }
@@ -37,6 +30,6 @@ class Metrics extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('metrics');
+        Schema::dropIfExists('role');
     }
 }

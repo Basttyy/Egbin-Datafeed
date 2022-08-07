@@ -3,49 +3,55 @@
 @section('title', 'Datafeed')
 
 @section('content_header')
-    <h1>Datafeed Home</h1>
+<h1>Datafeed Home</h1>
 @stop
 
 @section('content')
-    <p>Welcome to this beautiful admin panel.</p>
-    <table id="table" class="table table-striped table-bordered" style="width:100%">
-   
-    </table>
+<p>Welcome to this beautiful admin panel.</p>
+<table id="table" class="table table-striped table-bordered" style="width:100%">
+
+</table>
 @stop
 
 
 @section('plugins.Datatables', true)
 
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
+<link rel="stylesheet" href="/css/admin_custom.css">
 @stop
 
 @section('js')
-    <script>
-        var kpi = <?php echo json_encode($kpi); ?>;
-        let dats = [];
+<script>
+    var kpis = <?php echo json_encode($kpis); ?>;
+    let dats = [];
 
-        kpi.forEach(response => {
-            console.log(response);
-            dats.push([response.kpi_name, response.kpi_code, response.description, response.kpi_category
-                   ]);
-        });
+    kpis.forEach(kpi => {
+        console.log(kpi);
+        dats.push([kpi.kpi_name, kpi.kpi_code, kpi.description, kpi.kpi_category]);
+    });
 
-        $(function() {
-            $('#table').DataTable({
-                data: dats,
-                dom: 'Bfrtip',
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
-                ],
-                columns: [
-                    { title: 'Kpi Name' },
-                    { title: 'Kpi Code' },
-                    { title: 'Kpi Description' },
-                    { title: 'Kpi  Category' },
-                    
-                ]
-            });
+    $(function() {
+        $('#table').DataTable({
+            data: dats,
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
+            columns: [{
+                    title: 'Kpi Name'
+                },
+                {
+                    title: 'Kpi Code'
+                },
+                {
+                    title: 'Kpi Description'
+                },
+                {
+                    title: 'Kpi  Category'
+                },
+
+            ]
         });
-    </script>
+    });
+</script>
 @stop

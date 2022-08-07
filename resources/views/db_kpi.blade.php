@@ -23,12 +23,12 @@
 @section('js')
     <script>
         console.log('Hi!'); 
-        var kpi = <?php echo json_encode($kpi); ?>;
+        var kpis = <?php echo json_encode($kpis); ?>;
         let dats = [];
 
-        kpi.forEach(response => {
-            console.log(response);
-            dats.push([response.kpi_name, response.kpi_code, response.kpi_description, response.kpi_category]);
+        kpis.forEach(kpi => {
+            console.log(kpi);
+            dats.push([kpi.kpi_name, kpi.kpi_code, kpi.kpi_description, kpi.kpi_category]);
         });
 
         $(function() {

@@ -8,16 +8,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Metric extends Model
 {
+    const SAVED = 'saved';
+    const APPROVED = 'approved';
+    const DISAPPROVED = 'disapproved';
+    const SYNCED = 'synced';
     use HasFactory, HasRelationships;
-    protected $table = 'kpi' ;
+    protected $table = 'metrics' ;
     protected $fillable =[
+        'user_id',
         'code',
         'type',
         'value',
         'comment',
-        'entryDate',
+        'description',
+        'entry_date',
         'status',
-        'entry_type'
+        'entry_type',
+        'item_status',
     ];
 
     public function user() {

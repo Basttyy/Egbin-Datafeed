@@ -3,20 +3,16 @@
 @section('title', 'Datafeed')
 
 @section('content_header')
-<h1>Datafeed Home</h1>
+<h1>Database Metrics</h1>
 @stop
 
 @section('content')
 <p>Welcome to this beautiful admin panel.</p>
-
 <button type="button" id="btnOpenSaltB" class="btn btn-primary" data-toggle="modal" data-target="#metricsModal" style="float:right;">Add Metrics</button>
 <br>
-
 <table id="table" class="table table-striped table-bordered" style="width:100%">
 
 </table>
-
-
 <!-- MODAL -->
 <div class="modal fade" id="metricsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -78,16 +74,14 @@
     </div>
 </div>
 
-
-
-
 @stop
+
+
+@section('plugins.Datatables', true)
 
 @section('css')
 <link rel="stylesheet" href="/css/admin_custom.css">
 @stop
-
-
 
 @section('js')
 <script>
@@ -96,9 +90,9 @@
     let dats = [];
 
     metrics.forEach(metric => {
-        // console.log(metric);
-        dats.push([metric.metric_name, metric.metric_code, metric.metric_description, metric.metric_category,
-            metric.metric_type, metric.unit, metric.unit_symbol, metric.status
+        console.log(metric);
+        dats.push([metric.id, metric.code, metric.value, metric.description, metric.type,
+            metric.entry_type, metric.status, metric.item_status, metric.entry_date,
         ]);
     });
 
@@ -110,40 +104,34 @@
                 'copy', 'csv', 'excel', 'pdf', 'print'
             ],
             columns: [{
-                    title: 'Metric Name'
+                    title: 'Id'
                 },
                 {
-                    title: 'Metric Code'
+                    title: 'Code'
                 },
                 {
-                    title: 'Metric Description'
+                    title: 'Value'
                 },
                 {
-                    title: 'Metric Category'
+                    title: 'Description'
                 },
                 {
-                    title: 'Metric Type'
+                    title: 'Type'
                 },
                 {
-                    title: 'Unit'
-                },
-                {
-                    title: 'Unit Symbol'
+                    title: 'Entry Type'
                 },
                 {
                     title: 'Status'
+                },
+                {
+                    title: 'Item Status'
+                },
+                {
+                    title: 'Entry Date'
                 }
             ]
         });
-
     });
-
-
-    // const names = {
-    //         male:'KPAMSAR',
-    //         AGE:699
-    // };
-    // const jsonString = JSON.stringify(names);
-    // console.log(jsonString);
 </script>
 @stop
