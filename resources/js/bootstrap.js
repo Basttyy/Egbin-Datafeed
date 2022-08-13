@@ -1,7 +1,9 @@
 window._ = require('lodash');
 
 try {
+    require('overlayscrollbars');
     require('bootstrap');
+    require('../../vendor/almasaeed2010/adminlte/dist/js/adminlte');
 } catch (e) {}
 
 /**
