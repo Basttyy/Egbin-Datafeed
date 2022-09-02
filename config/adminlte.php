@@ -251,13 +251,18 @@ return [
             'icon' => 'fas fa-fw fa-user',
         ],
         [
+            'text' => 'Uploaded Metrics',
+            'url'  => 'sync-metrics',
+            'icon' => 'fas fa-fw fa-user',
+        ],
+        [
             'text' => 'Approved Metrics',
             'url'  => 'approved-metrics',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
-            'text' => 'Uploaded Metrics',
-            'url'  => 'sync-metrics',
+            'text' => 'Disapproved Metrics',
+            'url'  => 'disapproved-metrics',
             'icon' => 'fas fa-fw fa-user',
         ],
 

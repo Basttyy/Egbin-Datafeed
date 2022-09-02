@@ -4,12 +4,13 @@
 @section('title', 'Datafeed')
 
 @section('content_header')
-<h1>Approve Uploaded Metrics</h1>
+<h1>Disapproved Metrics</h1>
 @stop
 
 @section('content')
-<p>Welcome to this beautiful admin panel.</p>
+<p></p>
 
+<br>
 <table id="table" class="table table-striped table-bordered" style="width:100%">
 
 </table>
@@ -54,7 +55,7 @@
 @section('plugins.Datatables', true)
 
 @section('css')
-<link rel="stylesheet" href="/css/admin_custom.css">
+<link rel="stylesheet" href="/css/custom.css">
 @stop
 
 @section('js')
@@ -62,13 +63,11 @@
     console.log('Hi!');
     var metrics = <?php echo json_encode($metrics); ?>;
     var base_url = decodeURIComponent("<?php echo rawurlencode(route('update_metric', ['id' => 1])); ?>")
-
+    let dats = []
     let clickedData = []
     let clickedId = -1
     let status = ""
     var row = null
-
-    let dats = [];
 
     metrics.forEach(metric => {
         console.log(metric);
@@ -78,9 +77,10 @@
     });
 
     function submitForm (event) {
-        alert(clickedData);
+        alert(clickedData)
         var feature_id = clickedData[0]
         var textarea = document.getElementById('textarea')
+        event.preventDefault()
 
         fetch(base_url.replace('1', feature_id), {
             method: 'PUT',
@@ -96,9 +96,6 @@
                 reason: textarea.value
             })
         }).then( resp => {
-            // smsDataSet = smsDataSet.filter(function(value, index, arr) {
-            //     return value[0] != id
-            // })
             metricTable.row( row ).remove().draw(false)
             
             clickedData = []
@@ -154,9 +151,6 @@
                 },
                 {
                     title: 'Approve'
-                },
-                {
-                    title: 'Disapprove'
                 }
             ],
             columnDefs: [
@@ -164,12 +158,6 @@
                     targets: 9,
                     render: function (data, type, row, meta) {
                         return '<input type="button" class="btn btn-primary approve" data-toggle="modal" data-target="#metricsModal" style="float:right;" id=n-"' + meta.row + '" value="Approve"/>';
-                    }
-                },
-                {
-                    targets: 10,
-                    render: function (data, type, row, meta) {
-                        return '<input type="button" class="btn btn-primary disapprove" data-toggle="modal" data-target="#metricsModal" style="float:right;" id=n-"' + meta.row + '" value="Disapprove"/>';
                     }
                 }
             ]
@@ -181,15 +169,6 @@
             clickedId = clickedData[0]
             console.log(clickedData)
             status = 'approved'
-            console.log(clickedId)
-        })
-
-        metricTable.on('click', '.disapprove', function () {
-            row = $(this).closest('tr');
-            clickedData = metricTable.row( row ).data()
-            clickedId = clickedData[0]
-            console.log(clickedData)
-            status = 'disapproved'
             console.log(clickedId)
         })
 

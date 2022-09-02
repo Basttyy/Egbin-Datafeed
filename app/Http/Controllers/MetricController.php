@@ -69,7 +69,8 @@ class MetricController extends Controller
             'description'=>'sometimes',
             'status'=>'sometimes',
             'entry_type'=>'sometimes',
-            'item_status' => 'sometimes'
+            'item_status' => 'sometimes',
+            'reason' => 'sometimes'
         ]);
 
         Log::info($request->entry_status);
@@ -104,6 +105,11 @@ class MetricController extends Controller
     public function showApprovedMetrics(){
         $metrics = Metric::where('item_status', Metric::APPROVED)->get();
         return view('approved_metrics',['metrics'=>$metrics]);
+    }
+
+    public function showDisapprovedMetrics(){
+        $metrics = Metric::where('item_status', Metric::DISAPPROVED)->get();
+        return view('disapproved_metrics',['metrics'=>$metrics]);
     }
 
     public function showPushedMetrics(){

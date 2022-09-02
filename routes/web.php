@@ -27,6 +27,7 @@ Route::get('kpi', [kpiController::class, 'showKpi'])->name('kpi');
 Route::post('metric', [MetricController::class, 'createMetric'])->name('post_metric');
 Route::get('db-metrics', [MetricController::class, 'dbMetrics'])->name('db_metrics');
 Route::get('approved-metrics', [MetricController::class, 'showApprovedMetrics'])->name('approved_metrics');
+Route::get('disapproved-metrics', [MetricController::class, 'showDisapprovedMetrics'])->name('disapproved_metrics');
 Route::get('sync-metrics', [MetricController::class, 'showPushedMetrics'])->name('synced_metrics');
 Route::get('push-metrics', [MetricController::class, 'syncData'])->name('sync_data');
 Route::put('/metrics/{id}', [MetricController::class, 'updateMetric'])->name('update_metric');

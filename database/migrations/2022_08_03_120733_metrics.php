@@ -22,6 +22,7 @@ class Metrics extends Migration
             $table->string('type');
             $table->unsignedBigInteger('value');
             $table->string('description');
+            $table->string('reason')->nullable();
             $table->string('status');
             $table->string('entry_type');
             $table->string('item_status')->default(Metric::SAVED);
