@@ -30,38 +30,34 @@
 
                 <div class="modal-body">
                     <div class="form-group row">
-                        <!-- <div class="col-md-12">
-                            <label for="">KPI Code</label>
-                            <input type="text" class="form-control" placeholder="KPI code" name="kpi_code">
-                        </div> -->
-
-
                         <div class="col-md-12">
                             <label for="">Metrics Code</label>
-                            <input type="text" class="form-control" placeholder="Metrics Code" name="code">
+                            <select class="form-control" placeholder="Select Metrics Code" name="metricCode">
+                                @foreach($kpis as $kpi)
+                                    <option value="{{$kpi->kpi_code}}">{{$kpi->kpi_name}}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-md-12">
                             <label for="">Metrics Type</label>
-                            <input type="text" class="form-control" placeholder="Metrics Type" name="type">
+                            <input type="text" class="form-control" placeholder="Metrics Type" name="metricType">
                         </div>
                         <div class="col-md-12">
                             <label for="">Value</label>
                             <input type="text" class="form-control" placeholder="Value" name="value">
                         </div>
                         <div class="col-md-12">
-                            <label for="">Description</label>
-                            <input type="text" class="form-control" placeholder="Description" name="description">
+                            <label for="">Comment</label>
+                            <input type="text" class="form-control" placeholder="Comment" name="comment">
                         </div>
                         <div class="col-md-12">
                             <label for="">Status</label>
                             <input type="text" class="form-control" placeholder="Status" name="status">
                         </div>
                         <div class="col-md-12">
-                            <label for="">Metric Type </label>
-                            <input type="text" class="form-control" placeholder="Entry Type" name="entry_type">
+                            <label for="">Metric Entry Type </label>
+                            <input type="text" class="form-control" placeholder="Metric Entry Type" name="metricEntryType">
                         </div>
-
-
                     </div>
                 </div>
 
@@ -86,18 +82,26 @@
 @section('js')
 <script>
     console.log('Hi!');
-    var metrics = <?php echo json_encode($metrics); ?>;
+    var errors = <?php if (isset($errors)) echo json_encode($errors); else echo json_encode([]); ?>;
+    var metrics = <?php  if (isset($metrics)) echo json_encode($metrics); else echo json_encode([]); ?>;
     let dats = [];
+
+    if (errors.length > 0) {
+        console.log("length is greater than 0")
+        errors.forEach(error => {
+            alert(error['error'])
+        })
+    }
 
     metrics.forEach(metric => {
         console.log(metric);
-        dats.push([metric.id, metric.code, metric.value, metric.description, metric.type,
-            metric.entry_type, metric.status, metric.item_status, metric.entry_date,
+        dats.push([metric.id, metric.metricCode, metric.value, metric.comment, metric.metricType,
+            metric.metricEntryType, metric.status, metric.item_status, metric.entryDate,
         ]);
     });
 
     $(function() {
-        metriTable = $('#table').DataTable({
+        metricTable = $('#table').DataTable({
             data: dats,
             dom: 'Bfrtip',
             buttons: [

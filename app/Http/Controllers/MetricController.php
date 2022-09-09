@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\kpi;
 use App\Metric;
 use App\Traits\UsesApi;
+use App\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class MetricController extends Controller
@@ -19,7 +23,7 @@ class MetricController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->except(['updateMetric']);
+        $this->middleware('auth')->except([]);
     }
 
     public function savemetric(Request $request){
@@ -40,35 +44,35 @@ class MetricController extends Controller
 
     public function createMetric(Request $request){
          $request->validate([
-             'code'=>'required',
-             'type'=>'required',
+             'metricCode'=>'required',
+             'metricType'=>'required',
              'value'=>'required',
-             'description'=>'required',
+             'comment'=>'required',
              'status'=>'required',
-             'entry_type'=>'required',
+             'metricEntryType'=>'required',
          ]);
 
          Metric::create([
              'user_id'=> Auth::user()->getAuthIdentifier(),
-             'code'=> $request->code,
+             'metricCode'=> (int)$request->metricCode,
              'value'=> $request->value,
-             'type'=> $request->type,
-             'description'=> $request->description,
+             'metricType'=> $request->metricType,
+             'comment'=> $request->comment,
              'status'=> $request->status,
-             'entry_type'=> $request->entry_type,
-             'entry_date'=> \date("Y-m-d H:i:s")
+             'metricEntryType'=> $request->metricEntryType,
+             'entryDate'=> \date("Y-m-d H:i:s")
          ]);
         return redirect()->route('db_metrics')->with('success','Metric added succesfully');
     }
 
     public function updateMetric(Request $request, $id) {
         $request->validate([
-            'code'=>'sometimes',
-            'type'=>'sometimes',
+            'metricCode'=>'sometimes',
+            'metricType'=>'sometimes',
             'value'=>'sometimes',
-            'description'=>'sometimes',
+            'comment'=>'sometimes',
             'status'=>'sometimes',
-            'entry_type'=>'sometimes',
+            'metricEntryType'=>'sometimes',
             'item_status' => 'sometimes',
             'reason' => 'sometimes'
         ]);
@@ -76,18 +80,6 @@ class MetricController extends Controller
         Log::info($request->entry_status);
 
         Metric::where('id', $id)->first()->updateOrFail($request->all());
-
-        // if (!$metric = Metric::where('id', $id)->first()) {
-        //     return \response()->json([
-        //         'message' => 'metric does not exist',
-        //     ], Response::HTTP_NOT_FOUND);
-        // }
-
-        // if (!$metric->update($request->only(['entry_status']))) {
-        //     return \response()->json([
-        //         'message' => 'unable to update metric',
-        //     ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        // }
 
         $metrics = Metric::where('item_status', Metric::SAVED)->get();
 
@@ -98,8 +90,10 @@ class MetricController extends Controller
     }
 
     public function dbMetrics(){
+        $kpis = kpi::all();
         $metrics = Metric::all();
-        return view('db_metrics',['metrics'=>$metrics]);
+
+        return view('db_metrics',['metrics'=>$metrics, 'kpis'=>$kpis]);
     }
 
     public function showApprovedMetrics(){
@@ -118,10 +112,42 @@ class MetricController extends Controller
     }
 
     public function syncData() {
-        $metrics = Metric::where('items_status', Metric::APPROVED)->get();
+        try{
+            $errors = [];
+            DB::beginTransaction();
 
-        $this->syncData($metrics);
+            if(!$user = User::find(Auth::user()->getAuthIdentifier())){
+                $errors = ['error' => 'error getting list'];
+                Log::debug("data could not be synced 3");
+                return view('approved_metrics',['errors' => $errors]);
+            }
+            if($user->api_token === null){
+                if(!$this->authorizeOnApi($user)){
+                    $errors = ['error' => 'unable to update user api token'];
+                    Log::debug("data could not be synced 3");
+                    return view('approved_metrics',['errors' => $errors]);
+                }
+            }
+            $metrics = Metric::where('item_status', Metric::APPROVED)->get(['metricCode', 'metricType', 'value', 'comment', 'status', 'metricEntryType', 'entryDate'])->toArray();
+    
+            if ($this->syncDataWithApi(['data' => $metrics, 'companyId' => $user->companyId], $user->api_token)) {
+                DB::commit();
+                Log::debug("data has been synced");
+                Metric::where('item_status', Metric::APPROVED)->update(['item_status' => Metric::SYNCED]);
+            } else {
+                DB::rollBack();
+                Log::debug("data could not be synced");
+                $errors = ['error' => 'unable to sync data with api'];
+            }
+    
+            $metrics = Metric::where('item_status', Metric::APPROVED)->get();
+    
+            return view('approved_metrics',['metrics'=>$metrics, 'errors' => $errors]);
+        } catch (Exception $ex) {
+            DB::rollBack();
+            Log::debug($ex->getTraceAsString());
+            return view('approved_metrics',['errors' => $errors]);
+        }
 
-        return view('db_metrics', ['metrics'=>$metrics]);
     }
 }

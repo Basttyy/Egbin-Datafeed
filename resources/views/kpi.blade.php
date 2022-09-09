@@ -22,8 +22,16 @@
 
 @section('js')
 <script>
-    var kpis = <?php echo json_encode($kpis); ?>;
+    var errors = <?php if (isset($errors)) echo json_encode($errors); else echo json_encode([]); ?>;
+    var kpis = <?php  if (isset($kpis)) echo json_encode($kpis); else echo json_encode([]); ?>;
     let dats = [];
+
+    if (errors.length > 0) {
+        console.log("length is greater than 0")
+        errors.forEach(error => {
+            alert(error['err'])
+        })
+    }
 
     kpis.forEach(kpi => {
         console.log(kpi);

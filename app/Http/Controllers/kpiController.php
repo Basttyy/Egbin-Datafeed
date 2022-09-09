@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\kpi;
 use App\Traits\UsesApi;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class kpiController extends Controller
 {
@@ -23,50 +25,68 @@ class kpiController extends Controller
 
 
     public function showKpi(){
-        if(!$user = User::find(Auth::user()->getAuthIdentifier())){
-            return view('kpi')->with('error','error getting list');
-        }
-        if($user->api_token === null){
-            if(!$this->authorizeOnApi($user)){
-                return view('kpi')->with('error', 'unable to update user api token');
-                
+        Log::debug("this controller was called");
+        try {
+            if(!$user = User::find(Auth::user()->getAuthIdentifier())){
+                return view('kpi')->with('error','error getting list');
             }
-        }
-        $response = Http::withToken($user->api_token)->get(Env::get('api_base_url')."/extintegration/kpi");
+            if($user->api_token === null){
+                if(!$this->authorizeOnApi($user)){
+                    return view('kpi')->with('error', 'unable to update user api token');
+                }
+            }
+            $response = $this->makeRequestAndGetResponse("extintegration/kpi", 'get', null, $user->api_token);
 
-        if($response->status() === 200){
-            return view('kpi')->with('kpis', $response['data']);
+            if($response->status() === 200){
+                Log::debug("status is 200");
+                $datas = $response['data'];
+
+                $kpis = kpi::all(['kpi_code', 'kpi_name', 'description', 'kpi_category'])->toArray();
+
+                $count = count($kpis);
+
+                if (\count($datas) > $count) {
+                    $diff = \array_slice($datas, $count, null, true);
+                    kpi::insert($diff);
+                }
+                Log::debug("everything went well");
+                return view('kpi')->with('kpis', $response['data']);
+            }
+            else{
+                Log::debug("unable to get data");
+                Log::debug($response->status());
+                return view('kpi')->with('error','unable to get data');
+            }
+        } catch (Exception $ex) {
+            Log::debug($ex->getTraceAsString());
+            return view('kpi')->with('errors', ['err' => $ex->getMessage()]);
         }
-        else{
-            return view('kpi')->with('error','unable to get data');
-        }
-        
     }
 
-    public function showCreateKpi(){
-        return view('create_kpi');
-    }
+    // public function showCreateKpi(){
+    //     return view('create_kpi');
+    // }
 
-    public function createKpi(Request $request){
-        $request->validate([
-            'kpi_code'=>'required',
-            'kpi_name'=>'required',
-            'kpi_description'=>'required',
-            'kpi_category'=>'required',
+    // public function createKpi(Request $request){
+    //     $request->validate([
+    //         'kpi_code'=>'required',
+    //         'kpi_name'=>'required',
+    //         'kpi_description'=>'required',
+    //         'kpi_category'=>'required',
             
-        ]);
+    //     ]);
 
 
 
-         kpi::create([
-             'email'=> Auth::user()->email,
-             'kpi_code'=>$request->kpi_code,
-             'kpi_name'=>$request->kpi_name,
-             'kpi_description'=>$request->kpi_description,
-             'kpi_category'=>$request->kpi_category,
-         ]);
-        return redirect()->route('kpi')->with('success','KPI added succesfully');
-    }
+    //      kpi::create([
+    //          'email'=> Auth::user()->email,
+    //          'kpi_code'=>$request->kpi_code,
+    //          'kpi_name'=>$request->kpi_name,
+    //          'kpi_description'=>$request->kpi_description,
+    //          'kpi_category'=>$request->kpi_category,
+    //      ]);
+    //     return redirect()->route('kpi')->with('success','KPI added succesfully');
+    // }
     public function dbkpi(){
         $kpis = kpi::all();
         return view('db_kpi',['kpis'=>$kpis]);

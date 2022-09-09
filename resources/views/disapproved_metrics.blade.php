@@ -71,8 +71,8 @@
 
     metrics.forEach(metric => {
         console.log(metric);
-        dats.push([metric.id, metric.code, metric.value, metric.description, metric.type,
-            metric.entry_type, metric.status, metric.item_status, metric.entry_date,
+        dats.push([metric.id, metric.metricCode, metric.value, metric.comment, metric.metricType,
+            metric.metricEntryType, metric.status, metric.item_status, metric.entryDate,
         ]);
     });
 

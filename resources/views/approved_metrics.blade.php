@@ -1,5 +1,6 @@
 @extends('adminlte::page')
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<meta session=
 
 @section('title', 'Datafeed')
 
@@ -12,7 +13,7 @@
 
 <form action="{{route('sync_data')}}" method="post">
     @csrf
-    @method('PUT')
+    @method('GET')
     <button type="submit" class="btn btn-primary" style="float:right;">SYNC </button>
 </form>
 <br>
@@ -65,8 +66,8 @@
 
 @section('js')
 <script>
-    console.log('Hi!');
-    var metrics = <?php echo json_encode($metrics); ?>;
+    var errors = <?php if (isset($errors)) echo json_encode($errors); else echo json_encode([]); ?>;
+    var metrics = <?php  if (isset($metrics)) echo json_encode($metrics); else echo json_encode([]); ?>;
     var base_url = decodeURIComponent("<?php echo rawurlencode(route('update_metric', ['id' => 1])); ?>")
     let dats = [];
     
@@ -74,11 +75,18 @@
     let clickedId = -1
     let status = ""
     var row = null
+    
+    if (errors.length > 0) {
+        console.log("length is greater than 0")
+        errors.forEach(error => {
+            alert(error['error'])
+        })
+    }
 
     metrics.forEach(metric => {
         console.log(metric);
-        dats.push([metric.id, metric.code, metric.value, metric.description, metric.type,
-            metric.entry_type, metric.status, metric.item_status, metric.entry_date,
+        dats.push([metric.id, metric.metricCode, metric.value, metric.comment, metric.metricType,
+            metric.metricEntryType, metric.status, metric.item_status, metric.entryDate,
         ]);
     });
 

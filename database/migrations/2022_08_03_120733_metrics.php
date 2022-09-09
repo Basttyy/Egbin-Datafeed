@@ -18,15 +18,15 @@ class Metrics extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('code');
-            $table->string('type');
+            $table->integer('metricCode');
+            $table->string('metricType');
             $table->unsignedBigInteger('value');
-            $table->string('description');
+            $table->string('comment');
             $table->string('reason')->nullable();
             $table->string('status');
-            $table->string('entry_type');
+            $table->string('metricEntryType');
             $table->string('item_status')->default(Metric::SAVED);
-            $table->dateTime('entry_date');
+            $table->dateTime('entryDate');
             $table->timestamps();
         });
     }

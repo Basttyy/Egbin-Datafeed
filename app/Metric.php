@@ -16,14 +16,13 @@ class Metric extends Model
     protected $table = 'metrics' ;
     protected $fillable =[
         'user_id',
-        'code',
-        'type',
+        'metricCode',
+        'metricType',
         'value',
         'comment',
-        'description',
-        'entry_date',
+        'entryDate',
         'status',
-        'entry_type',
+        'metricEntryType',
         'item_status',
     ];
 
