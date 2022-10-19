@@ -46,7 +46,7 @@ return [
     */
 
     'logo' => '<b>Egbin</b>Datafeed',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'logo_img' => 'vendor/adminlte/dist/img/Egbinlogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -102,12 +102,12 @@ return [
     |
     */
 
-    'classes_auth_card' => 'card-outline card-primary',
-    'classes_auth_header' => '',
-    'classes_auth_body' => '',
-    'classes_auth_footer' => '',
+    'classes_auth_card' => 'card-outline card-primary card-orange',
+    'classes_auth_header' => 'text-info',
+    'classes_auth_body' => 'text-info',
+    'classes_auth_footer' => 'text-orange',
     'classes_auth_icon' => '',
-    'classes_auth_btn' => 'btn-flat btn-primary',
+    'classes_auth_btn' => 'btn-flat btn-info',
 
     /*
     |--------------------------------------------------------------------------
@@ -125,11 +125,11 @@ return [
     'classes_brand' => '',
     'classes_brand_text' => '',
     'classes_content_wrapper' => '',
-    'classes_content_header' => '',
+    'classes_content_header' => 'text-info',
     'classes_content' => '',
     'classes_sidebar' => 'sidebar-dark-primary elevation-4',
     'classes_sidebar_nav' => '',
-    'classes_topnav' => 'navbar-white navbar-light',
+    'classes_topnav' => 'navbar-dark',
     'classes_topnav_nav' => 'navbar-expand',
     'classes_topnav_container' => 'container',
 
@@ -233,7 +233,6 @@ return [
             'type'         => 'fullscreen-widget',
             'topnav_right' => true,
         ],
-
         // Sidebar items:
         [
             'type' => 'sidebar-menu-search',
@@ -244,7 +243,6 @@ return [
             'url'  => 'kpi',
             'icon' => 'fas fa-fw fa-user',
         ],
-    
         [
             'text' => 'Database Metrics',
             'url'  => 'db-metrics',
@@ -254,6 +252,7 @@ return [
             'text' => 'Uploaded Metrics',
             'url'  => 'sync-metrics',
             'icon' => 'fas fa-fw fa-user',
+            'can' => 'approve-metric',
         ],
         [
             'text' => 'Approved Metrics',
@@ -276,6 +275,12 @@ return [
             'text' => 'change_password',
             'url'  => 'admin/settings',
             'icon' => 'fas fa-fw fa-lock',
+        ],
+        [
+            'text' => 'register',
+            'url'  => 'register',
+            'icon' => 'fas fa-fw fa-user',
+            'can' => 'register-user',
         ],
         [
             'text'    => 'multilevel',

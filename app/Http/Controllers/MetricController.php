@@ -44,12 +44,12 @@ class MetricController extends Controller
 
     public function createMetric(Request $request){
          $request->validate([
-             'metricCode'=>'required',
-             'metricType'=>'required',
-             'value'=>'required',
-             'comment'=>'required',
-             'status'=>'required',
-             'metricEntryType'=>'required',
+             'metricCode'=>'required|numeric',
+             'metricType'=>'required|string',
+             'value'=>'required|numeric',
+             'comment'=>'required|string',
+             'status'=>'required|string',
+             'metricEntryType'=>'required|string',
          ]);
 
          Metric::create([
@@ -67,14 +67,14 @@ class MetricController extends Controller
 
     public function updateMetric(Request $request, $id) {
         $request->validate([
-            'metricCode'=>'sometimes',
-            'metricType'=>'sometimes',
-            'value'=>'sometimes',
-            'comment'=>'sometimes',
-            'status'=>'sometimes',
-            'metricEntryType'=>'sometimes',
-            'item_status' => 'sometimes',
-            'reason' => 'sometimes'
+            'metricCode'=>'sometimes|numeric',
+            'metricType'=>'sometimes|string',
+            'value'=>'sometimes|numeric',
+            'comment'=>'sometimes|string',
+            'status'=>'sometimes|string',
+            'metricEntryType'=>'sometimes|string',
+            'item_status' => 'sometimes|string',
+            'reason' => 'sometimes|string'
         ]);
 
         Log::info($request->entry_status);

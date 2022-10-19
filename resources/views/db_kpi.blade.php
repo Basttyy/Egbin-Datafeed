@@ -23,7 +23,7 @@
 @section('js')
     <script>
         console.log('Hi!'); 
-        var kpis = <?php echo json_encode($kpis); ?>;
+        var kpis = <?php  if (isset($kpis)) echo json_encode($kpis); else echo json_encode([]); ?>;
         let dats = [];
 
         kpis.forEach(kpi => {

@@ -60,7 +60,7 @@
 @section('js')
 <script>
     console.log('Hi!');
-    var metrics = <?php echo json_encode($metrics); ?>;
+    var metrics = <?php  if (isset($metrics)) echo json_encode($metrics); else echo json_encode([]); ?>;
     var base_url = decodeURIComponent("<?php echo rawurlencode(route('update_metric', ['id' => 1])); ?>")
 
     let clickedData = []

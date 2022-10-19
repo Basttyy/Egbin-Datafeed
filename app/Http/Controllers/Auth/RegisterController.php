@@ -11,7 +11,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Role;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class RegisterController extends Controller
 {
@@ -42,7 +45,19 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('auth')->except([]);
+    }
+
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showRegistrationForm()
+    {
+        $roles = Role::where('role', '!=', 'super-admin')->get();
+        Log::info($roles);
+        return view('auth.register')->with('roles', $roles);
     }
 
     /**
@@ -53,20 +68,33 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-       
-    
-
         return  Validator::make($data, [
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
+                'role' => ['required', 'numeric']
             ]);
+    }
 
-           
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
 
-            
-            
-        
+        event(new Registered($user = $this->create($request->all())));
+
+        // $this->guard()->login($user);
+
+        // if ($response = $this->registered($request, $user)) {
+        //     return $response;
+        // }
+
+        return redirect($this->redirectPath());
     }
 
     /**
@@ -77,11 +105,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        Log::info(json_encode($data));
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'api_pass' => Crypt::encryptString($data['password'])
+            'api_pass' => Crypt::encryptString($data['password']),
+            'role_id' => $data['role']
         ]);
     }
 }

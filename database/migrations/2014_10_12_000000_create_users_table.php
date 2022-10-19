@@ -22,6 +22,8 @@ class CreateUsersTable extends Migration
             $table->string('api_pass');
             $table->integer('companyId')->nullable();
             $table->string('api_token')->nullable();
+            $table->unsignedBigInteger('role_id')->nullable();
+            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
             $table->rememberToken();
             $table->timestamps();
         });

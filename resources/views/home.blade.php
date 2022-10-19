@@ -7,9 +7,8 @@
 @stop
 
 @section('content')
-<p>Welcome to this beautiful admin panel.</p>
 
-<button type="button" id="btnOpenSaltB" class="btn btn-primary" data-toggle="modal" data-target="#metricsModal" style="float:right;">Add Metrics</button>
+<button type="button" id="btnOpenSaltB" class="btn btn-info" data-toggle="modal" data-target="#metricsModal" style="float:right;">Add Metrics</button>
 <br>
 
 <table id="table" class="table table-striped table-bordered" style="width:100%">
@@ -34,15 +33,13 @@
 
                 <div class="modal-body">
                     <div class="form-group row">
-                        <!-- <div class="col-md-12">
-                            <label for="">KPI Code</label>
-                            <input type="text" class="form-control" placeholder="KPI code" name="kpi_code">
-                        </div> -->
-
-
                         <div class="col-md-12">
                             <label for="">Metrics Code</label>
-                            <input type="text" class="form-control" placeholder="Metrics Code" name="code">
+                            <select class="form-control" placeholder="Select Metrics Code" name="metricCode">
+                                @foreach($kpis as $kpi)
+                                    <option value="{{$kpi->kpi_code}}">{{$kpi->kpi_name}}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-md-12">
                             <label for="">Metrics Type</label>
@@ -50,7 +47,7 @@
                         </div>
                         <div class="col-md-12">
                             <label for="">Value</label>
-                            <input type="text" class="form-control" placeholder="Value" name="value">
+                            <input type="number" class="form-control" placeholder="Value" name="value">
                         </div>
                         <div class="col-md-12">
                             <label for="">Description</label>
@@ -84,15 +81,13 @@
 @stop
 
 @section('css')
-<link rel="stylesheet" href="/css/admin_custom.css">
+<link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/custom.css') }}">
 @stop
-
-
 
 @section('js')
 <script>
     console.log('Hi!');
-    var metrics = <?php echo json_encode($metrics); ?>;
+    var metrics = <?php  if (isset($metrics)) echo json_encode($metrics); else echo json_encode([]); ?>;
     let dats = [];
 
     metrics.forEach(metric => {

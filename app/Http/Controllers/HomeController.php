@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\kpi;
 use App\Metric;
 use App\Traits\UsesApi;
 use App\User;
@@ -37,17 +38,18 @@ class HomeController extends Controller
                 return view('home')->with('error', 'unable to update user api token');
             }
         }
-        $resp = Http::withToken($user->api_token)->get(Env::get('api_base_url')."/extintegration/metrics/");
+        $resp = $this->makeRequestAndGetResponse("/extintegration/metrics/", 'get', null, $user->api_token);
+        $kpis = kpi::all();
 
         if ($resp->status() === 200) {
-            return view('home')->with('metrics', $resp['data']);
+            return view('home', ['metrics' => $resp['data'], 'kpis' => $kpis]);
         } else if ($resp->status() === 401) {   // if unauthorized then try to re-authorize
             if (! $this->authorizeOnApi($user) ) {
                 return view('home')->with('error', 'unable to update user api token');
             }
             $resp = Http::withToken($user->api_token)->get(Env::get('api_base_url')."/extintegration/metrics/");
             if ($resp->status() === 200) {
-                return view('home')->with('metrics', $resp['data']);
+                return view('home', ['metrics' => $resp['data'], 'kpis' => $kpis]);
             } else {
                 return view('home')->with('error', 'unable to fetch metrics');
             }
