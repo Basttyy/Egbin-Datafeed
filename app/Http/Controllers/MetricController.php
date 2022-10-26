@@ -50,6 +50,7 @@ class MetricController extends Controller
              'comment'=>'required|string',
              'status'=>'required|string',
              'metricEntryType'=>'required|string',
+             'month' => 'required|string',
          ]);
 
          Metric::create([
@@ -60,6 +61,7 @@ class MetricController extends Controller
              'comment'=> $request->comment,
              'status'=> $request->status,
              'metricEntryType'=> $request->metricEntryType,
+             'month' => $request->month,
              'entryDate'=> \date("Y-m-d H:i:s")
          ]);
         return redirect()->route('db_metrics')->with('success','Metric added succesfully');
@@ -74,7 +76,8 @@ class MetricController extends Controller
             'status'=>'sometimes|string',
             'metricEntryType'=>'sometimes|string',
             'item_status' => 'sometimes|string',
-            'reason' => 'sometimes|string'
+            'reason' => 'sometimes|string',
+            'month' => 'sometimes|string',
         ]);
 
         Log::info($request->entry_status);

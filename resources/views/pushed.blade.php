@@ -8,8 +8,6 @@
 @stop
 
 @section('content')
-<p>Welcome to this beautiful admin panel.</p>
-
 <table id="table" class="table table-striped table-bordered" style="width:100%">
 
 </table>
@@ -54,7 +52,7 @@
 @section('plugins.Datatables', true)
 
 @section('css')
-<link rel="stylesheet" href="/css/admin_custom.css">
+<link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/custom.css') }}">
 @stop
 
 @section('js')
@@ -73,7 +71,7 @@
     metrics.forEach(metric => {
         console.log(metric);
         dats.push([metric.id, metric.metricCode, metric.value, metric.comment, metric.metricType,
-            metric.metricEntryType, metric.status, metric.item_status, metric.entryDate,
+            metric.metricEntryType, metric.status, metric.item_status, metric.month, metric.entryDate
         ]);
     });
 
@@ -120,6 +118,7 @@
 
     $(function() {
         metricTable = $('#table').DataTable({
+            scrollX: true,
             data: dats,
             dom: 'Bfrtip',
             buttons: [
@@ -150,6 +149,9 @@
                     title: 'Item Status'
                 },
                 {
+                    title: 'Month'
+                },
+                {
                     title: 'Entry Date'
                 },
                 {
@@ -161,13 +163,13 @@
             ],
             columnDefs: [
                 {
-                    targets: 9,
+                    targets: 10,
                     render: function (data, type, row, meta) {
                         return '<input type="button" class="btn btn-primary approve" data-toggle="modal" data-target="#metricsModal" style="float:right;" id=n-"' + meta.row + '" value="Approve"/>';
                     }
                 },
                 {
-                    targets: 10,
+                    targets: 11,
                     render: function (data, type, row, meta) {
                         return '<input type="button" class="btn btn-primary disapprove" data-toggle="modal" data-target="#metricsModal" style="float:right;" id=n-"' + meta.row + '" value="Disapprove"/>';
                     }

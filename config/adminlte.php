@@ -103,11 +103,11 @@ return [
     */
 
     'classes_auth_card' => 'card-outline card-primary card-orange',
-    'classes_auth_header' => 'text-info',
-    'classes_auth_body' => 'text-info',
+    'classes_auth_header' => 'text-orange',
+    'classes_auth_body' => 'text-orange',
     'classes_auth_footer' => 'text-orange',
     'classes_auth_icon' => '',
-    'classes_auth_btn' => 'btn-flat btn-info',
+    'classes_auth_btn' => 'btn-flat btn-orange',
 
     /*
     |--------------------------------------------------------------------------
@@ -125,7 +125,7 @@ return [
     'classes_brand' => '',
     'classes_brand_text' => '',
     'classes_content_wrapper' => '',
-    'classes_content_header' => 'text-info',
+    'classes_content_header' => 'text-orange',
     'classes_content' => '',
     'classes_sidebar' => 'sidebar-dark-primary elevation-4',
     'classes_sidebar_nav' => '',
@@ -192,6 +192,7 @@ return [
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
+    'change_pass_url' => '/auth/change-password',
     'profile_url' => false,
 
     /*
@@ -266,14 +267,14 @@ return [
         ],
 
         ['header' => 'account_settings'],
-        [
-            'text' => 'profile',
-            'url'  => 'settings',
-            'icon' => 'fas fa-fw fa-user',
-        ],
+        // [
+        //     'text' => 'profile',
+        //     'url'  => 'settings',
+        //     'icon' => 'fas fa-fw fa-user',
+        // ],
         [
             'text' => 'change_password',
-            'url'  => 'admin/settings',
+            'url'  => 'auth/change-password',
             'icon' => 'fas fa-fw fa-lock',
         ],
         [

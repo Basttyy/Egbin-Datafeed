@@ -45,5 +45,5 @@
 
 
 @section('css')
-<link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/custom.css') }}">
 @stop

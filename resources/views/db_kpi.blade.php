@@ -7,7 +7,6 @@
 @stop
 
 @section('content')
-    <p>Welcome to this beautiful admin panel.</p>
     <table id="table" class="table table-striped table-bordered" style="width:100%">
    
     </table>
@@ -17,7 +16,7 @@
 @section('plugins.Datatables', true)
 
 @section('css')
-<link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/custom.css') }}">
 @stop
 
 @section('js')
@@ -33,6 +32,7 @@
 
         $(function() {
             kpiTable = $('#table').DataTable({
+                scrollX: true,
                 data: dats,
                 dom: 'Bfrtip',
                 buttons: [

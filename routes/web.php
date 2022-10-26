@@ -22,7 +22,7 @@ Route::get('/', [HomeController::class, 'index']);
 
 Auth::routes();
 
-Route::get('/auth/change-password', [ChangePasswordController::class, 'ShowChangePasswordForm'])->name('auth.change_password.show');
+Route::get('/auth/change-password', [ChangePasswordController::class, 'showChangePasswordForm'])->name('auth.change_password.show');
 Route::post('/auth/change-password', [ChangePasswordController::class, 'changePassword'])->name('auth.change_password');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 

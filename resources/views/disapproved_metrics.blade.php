@@ -55,7 +55,7 @@
 @section('plugins.Datatables', true)
 
 @section('css')
-<link rel="stylesheet" href="/css/custom.css">
+<link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/custom.css') }}">
 @stop
 
 @section('js')
@@ -72,7 +72,7 @@
     metrics.forEach(metric => {
         console.log(metric);
         dats.push([metric.id, metric.metricCode, metric.value, metric.comment, metric.metricType,
-            metric.metricEntryType, metric.status, metric.item_status, metric.entryDate,
+            metric.metricEntryType, metric.status, metric.item_status, metric.month, metric.entryDate
         ]);
     });
 
@@ -117,6 +117,7 @@
 
     $(function() {
         metricTable = $('#table').DataTable({
+            scrollX: true,
             data: dats,
             dom: 'Bfrtip',
             buttons: [
@@ -148,6 +149,9 @@
                 },
                 {
                     title: 'Entry Date'
+                },
+                {
+                    title: 'Month'
                 },
                 {
                     title: 'Approve'

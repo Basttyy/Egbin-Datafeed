@@ -7,7 +7,6 @@
 @stop
 
 @section('content')
-
 <button type="button" id="btnOpenSaltB" class="btn btn-info" data-toggle="modal" data-target="#metricsModal" style="float:right;">Add Metrics</button>
 <br>
 
@@ -38,6 +37,15 @@
                             <select class="form-control" placeholder="Select Metrics Code" name="metricCode">
                                 @foreach($kpis as $kpi)
                                     <option value="{{$kpi->kpi_code}}">{{$kpi->kpi_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="">Month</label>
+                            <select class="form-control" placeholder="Select Month" name="month">
+                                @php( $months = [ "January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"])
+                                @foreach($months as $month)
+                                    <option value="{{$month}}">{{$month}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -99,6 +107,7 @@
 
     $(function() {
         metricTable = $('#table').DataTable({
+            scrollX: true,
             data: dats,
             dom: 'Bfrtip',
             buttons: [

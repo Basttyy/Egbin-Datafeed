@@ -24,6 +24,7 @@ class Metric extends Model
         'status',
         'metricEntryType',
         'item_status',
+        'month',
     ];
 
     public function user() {

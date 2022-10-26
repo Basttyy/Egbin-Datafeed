@@ -26,6 +26,7 @@ class Metrics extends Migration
             $table->string('status');
             $table->string('metricEntryType');
             $table->string('item_status')->default(Metric::SAVED);
+            $table->string('month');
             $table->dateTime('entryDate');
             $table->timestamps();
         });

@@ -4,12 +4,12 @@
 } */
 
 .pagination .page-item.active .page-link {
-    background-color: #17a2b8;
-    border-color: #17a2b8;
+    background-color: rgb(217, 115, 0);
+    border-color: rgb(217, 115, 0);
 }
 
 .page-link {
-    color: #17a2b8;
+    color: rgb(217, 115, 0);
 }
 
 table.dataTable > tbody > tr .selected {
@@ -24,9 +24,32 @@ table.dataTable > tbody > tr.selected > * {
     box-shadow: inset 0 0 0 9999px #17a2b8;
 }
 
-.btn-secondary {
+.btn.btn-primary {
+    color: #fff;
+    background-color: rgb(217, 115, 0);
+    border-color: rgb(217, 115, 0);
+    box-shadow: none;
+}
+
+.btn.btn-info {
+    background-color: rgb(217, 115, 0);
+    border-color: rgb(217, 115, 0);
+}
+
+.btn.btn-flat.btn-orange {
+    background-color: rgb(217, 115, 0);
+    border-color: rgb(217, 115, 0);
+    color: #fff;
+}
+
+.btn.btn-block.btn-flat.btn-info {
     background-color: #17a2b8;
     border-color: #17a2b8;
+}
+
+.btn-secondary {
+    background-color: rgb(217, 115, 0);
+    border-color: rgb(217, 115, 0);
 }
 
 .btn.btn-secondary {
@@ -35,14 +58,12 @@ table.dataTable > tbody > tr.selected > * {
 }
 
 div.register-card {
-    min-height: 300px;
-    min-width: 600px;
     padding: 2rem;
     margin: 5rem 12rem;
-    background-color: lightblue;
+    background-color: rgb(117, 165, 189);
 }
 
 .sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
-    background-color: #17a2b8;
+    background-color: rgb(217, 115, 0);
     color: #fff;
 }
