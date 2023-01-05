@@ -33,7 +33,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <label for="">Reason</label>
-                            <input type="textarea" id="textarea" class="form-control" placeholder="Metrics Code" name="code">
+                            <input type="textarea" id="textarea" class="form-control" placeholder="Approval Reason" name="code">
                         </div>
 
 
@@ -72,12 +72,11 @@
     metrics.forEach(metric => {
         console.log(metric);
         dats.push([metric.id, metric.metricCode, metric.value, metric.comment, metric.metricType,
-            metric.metricEntryType, metric.status, metric.item_status, metric.month, metric.entryDate
+            metric.metricEntryType, metric.status, metric.item_status, metric.entryDate
         ]);
     });
 
     function submitForm (event) {
-        alert(clickedData)
         var feature_id = clickedData[0]
         var textarea = document.getElementById('textarea')
         event.preventDefault()
@@ -133,7 +132,8 @@
                     title: 'Value'
                 },
                 {
-                    title: 'Description'
+                    title: 'Description',
+                    width: "20%"
                 },
                 {
                     title: 'Type'
@@ -149,9 +149,6 @@
                 },
                 {
                     title: 'Entry Date'
-                },
-                {
-                    title: 'Month'
                 },
                 {
                     title: 'Approve'

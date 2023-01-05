@@ -17,6 +17,7 @@ class Metrics extends Migration
         Schema::create('metrics', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->string('metricName');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('metricCode');
             $table->string('metricType');
@@ -26,7 +27,6 @@ class Metrics extends Migration
             $table->string('status');
             $table->string('metricEntryType');
             $table->string('item_status')->default(Metric::SAVED);
-            $table->string('month');
             $table->dateTime('entryDate');
             $table->timestamps();
         });

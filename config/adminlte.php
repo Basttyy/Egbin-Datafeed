@@ -239,16 +239,16 @@ return [
             'type' => 'sidebar-menu-search',
             'text' => 'search',
         ],
-        [
-            'text' => 'view KPI',
-            'url'  => 'kpi',
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        [
-            'text' => 'Database Metrics',
-            'url'  => 'db-metrics',
-            'icon' => 'fas fa-fw fa-user',
-        ],
+        // [
+        //     'text' => 'view KPI',
+        //     'url'  => 'kpi',
+        //     'icon' => 'fas fa-fw fa-user',
+        // ],
+        // [
+        //     'text' => 'Database Metrics',
+        //     'url'  => 'db-metrics',
+        //     'icon' => 'fas fa-fw fa-user',
+        // ],
         [
             'text' => 'Uploaded Metrics',
             'url'  => 'sync-metrics',
@@ -278,7 +278,7 @@ return [
             'icon' => 'fas fa-fw fa-lock',
         ],
         [
-            'text' => 'register',
+            'text' => 'Register User',
             'url'  => 'register',
             'icon' => 'fas fa-fw fa-user',
             'can' => 'register-user',
@@ -375,6 +375,21 @@ return [
                     'asset' => true,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css',
                 ],
+                // [
+                //     'type' => 'js',
+                //     'asset' => true,
+                //     'location' => 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js',
+                // ],
+                // [
+                //     'type' => 'js',
+                //     'asset' => true,
+                //     'location' => 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js',
+                // ],
+                // [
+                //     'type' => 'css',
+                //     'asset' => true,
+                //     'location' => 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css',
+                // ],
             ],
         ],
         'Select2' => [

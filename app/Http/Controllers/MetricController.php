@@ -6,10 +6,13 @@ use App\kpi;
 use App\Metric;
 use App\Traits\UsesApi;
 use App\User;
+use DateInterval;
+use DateTime;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -43,32 +46,41 @@ class MetricController extends Controller
     }
 
     public function createMetric(Request $request){
+
+        Log::info(json_encode($request->all()));
          $request->validate([
+            'metricName' => 'required|string',
              'metricCode'=>'required|numeric',
              'metricType'=>'required|string',
              'value'=>'required|numeric',
              'comment'=>'required|string',
              'status'=>'required|string',
              'metricEntryType'=>'required|string',
-             'month' => 'required|string',
+             'entryDate' => 'required|string',
          ]);
+
+        $date = new DateTime($request->entryDate);
+         if ($date >= new DateTime()) {
+            $date->sub(new DateInterval('P1D'));
+         }
 
          Metric::create([
              'user_id'=> Auth::user()->getAuthIdentifier(),
+             'metricName' => $request->metricName,
              'metricCode'=> (int)$request->metricCode,
-             'value'=> $request->value,
+             'value'=> (float)$request->value,
              'metricType'=> $request->metricType,
              'comment'=> $request->comment,
              'status'=> $request->status,
              'metricEntryType'=> $request->metricEntryType,
-             'month' => $request->month,
-             'entryDate'=> \date("Y-m-d H:i:s")
+             'entryDate'=> $date
          ]);
         return redirect()->route('db_metrics')->with('success','Metric added succesfully');
     }
 
     public function updateMetric(Request $request, $id) {
         $request->validate([
+            'metricName' => 'sometimes|string',
             'metricCode'=>'sometimes|numeric',
             'metricType'=>'sometimes|string',
             'value'=>'sometimes|numeric',
@@ -77,12 +89,12 @@ class MetricController extends Controller
             'metricEntryType'=>'sometimes|string',
             'item_status' => 'sometimes|string',
             'reason' => 'sometimes|string',
-            'month' => 'sometimes|string',
+            'entryDate' => 'sometimes|string'
         ]);
 
         Log::info($request->entry_status);
 
-        Metric::where('id', $id)->first()->updateOrFail($request->all());
+        Metric::where('id', $id)->first()->updateOrFail($request->only(['metricName', 'metricCode', 'metricType', 'value', 'comment', 'status', 'metricEntryType', 'item_status', 'reason', 'entryDate']));
 
         $metrics = Metric::where('item_status', Metric::SAVED)->get();
 
@@ -96,7 +108,7 @@ class MetricController extends Controller
         $kpis = kpi::all();
         $metrics = Metric::all();
 
-        return view('db_metrics',['metrics'=>$metrics, 'kpis'=>$kpis]);
+        return view('home', ['metrics'=>$metrics, 'kpis'=>$kpis]);
     }
 
     public function showApprovedMetrics(){
@@ -132,6 +144,7 @@ class MetricController extends Controller
                 }
             }
             $metrics = Metric::where('item_status', Metric::APPROVED)->get(['metricCode', 'metricType', 'value', 'comment', 'status', 'metricEntryType', 'entryDate'])->toArray();
+            Log::debug("the metric payload", $metrics);
     
             if ($this->syncDataWithApi(['data' => $metrics, 'companyId' => $user->companyId], $user->api_token)) {
                 DB::commit();

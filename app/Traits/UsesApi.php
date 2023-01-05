@@ -20,6 +20,9 @@ trait UsesApi {
             "password" => Crypt::decryptString(env('api_pass'))
         ]);
 
+        if ($resp instanceof Exception)
+            return false;
+
         if ($resp->status() === 200) {
             //Log::debug($resp['data']['company_id']);
             if (!$user->update(['api_token' => $resp['data']['access_token'], 'companyId' => $resp['data']['company_id']])) {
@@ -34,6 +37,9 @@ trait UsesApi {
         // Log::debug($data);
         // Log::debug($token);
         $resp = $this->makeRequestAndGetResponse('metricentries/push/', 'post', $data, $token);
+
+        if ($resp instanceof Exception)
+            return false;
 
         if ($resp->status() === 200) {
             return true;
@@ -50,7 +56,7 @@ trait UsesApi {
             return $resp;
         } catch (Exception $ex) {
             Log::debug($ex->getMessage());
-            return $resp;
+            return $ex;
         }
     }
 }

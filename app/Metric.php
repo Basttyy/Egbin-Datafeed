@@ -16,6 +16,7 @@ class Metric extends Model
     protected $table = 'metrics' ;
     protected $fillable =[
         'user_id',
+        'metricName',
         'metricCode',
         'metricType',
         'value',

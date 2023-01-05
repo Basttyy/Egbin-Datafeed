@@ -38,7 +38,7 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <label for="">Reason</label>
-                            <input type="textarea" id="textarea" class="form-control" placeholder="Metrics Code" name="code">
+                            <input type="textarea" id="textarea" class="form-control" placeholder="Reason for disapproval" name="code">
                         </div>
 
 
@@ -85,12 +85,11 @@
     metrics.forEach(metric => {
         console.log(metric);
         dats.push([metric.id, metric.metricCode, metric.value, metric.comment, metric.metricType,
-            metric.metricEntryType, metric.status, metric.item_status, metric.month, metric.entryDate
+            metric.metricEntryType, metric.status, metric.item_status, metric.entryDate
         ]);
     });
 
     function submitForm (event) {
-        alert(clickedData)
         var feature_id = clickedData[0]
         var textarea = document.getElementById('textarea')
         event.preventDefault()
@@ -145,7 +144,8 @@
                     title: 'Value'
                 },
                 {
-                    title: 'Description'
+                    title: 'Description',
+                    width: "20%"
                 },
                 {
                     title: 'Type'
@@ -160,9 +160,6 @@
                     title: 'Item Status'
                 },
                 {
-                    title: 'Month'
-                },
-                {
                     title: 'Entry Date'
                 },
                 {
@@ -171,7 +168,7 @@
             ],
             columnDefs: [
                 {
-                    targets: 10,
+                    targets: 9,
                     render: function (data, type, row, meta) {
                         return '<input type="button" class="btn btn-primary disapprove" data-toggle="modal" data-target="#metricsModal" style="float:right;" id=n-"' + meta.row + '" value="Disapprove"/>';
                     }

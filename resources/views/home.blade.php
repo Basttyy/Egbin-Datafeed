@@ -34,40 +34,43 @@
                     <div class="form-group row">
                         <div class="col-md-12">
                             <label for="">Metrics Code</label>
-                            <select class="form-control" placeholder="Select Metrics Code" name="metricCode">
+                            <select id="metric-select" class="form-control" placeholder="Select Metrics Code" name="metricCode" onchange="handleSelChange()">
+                                <option value="null">Select Metric Code</option>
                                 @foreach($kpis as $kpi)
-                                    <option value="{{$kpi->kpi_code}}">{{$kpi->kpi_name}}</option>
+                                    <option value="{{$kpi->metric_code}}">{{$kpi->metric_name}}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-12">
-                            <label for="">Month</label>
-                            <select class="form-control" placeholder="Select Month" name="month">
-                                @php( $months = [ "January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"])
-                                @foreach($months as $month)
-                                    <option value="{{$month}}">{{$month}}</option>
-                                @endforeach
-                            </select>
+                        <input id="metric_name" name="metricName" type="hidden" value="">
+                        <div class='col-md-12'>
+                            <label for="">Entry Date</label>
+                            <div class="input-group date">
+                                <input type='text' class="form-control" placeholder="Select Record Date" name="entryDate" />
+
+                                <span class="input-group-text">
+                                    <span class="fas fa-calendar"></span>
+                                </span>
+                            </div>
                         </div>
                         <div class="col-md-12">
-                            <label for="">Metrics Type</label>
-                            <input type="text" class="form-control" placeholder="Metrics Type" name="type">
+                            <label for="">Metric Type</label>
+                            <input type="text" id="metric_type" class="form-control" placeholder="Metric Type" name="metricType">
                         </div>
                         <div class="col-md-12">
                             <label for="">Value</label>
-                            <input type="number" class="form-control" placeholder="Value" name="value">
+                            <input type="number" class="form-control" placeholder="Value" name="value" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                         </div>
                         <div class="col-md-12">
                             <label for="">Description</label>
-                            <input type="text" class="form-control" placeholder="Description" name="description">
+                            <input id="description" type="text" class="form-control" placeholder="Description" name="comment">
                         </div>
                         <div class="col-md-12">
                             <label for="">Status</label>
-                            <input type="text" class="form-control" placeholder="Status" name="status">
+                            <input id="status" type="text" class="form-control" placeholder="Status" name="status" value="good">
                         </div>
                         <div class="col-md-12">
-                            <label for="">Metric Type </label>
-                            <input type="text" class="form-control" placeholder="Entry Type" name="entry_type">
+                            <label for="">Metric Entry Type </label>
+                            <input id = "entry_type" type="text" class="form-control" placeholder="Entry Type" name="metricEntryType" value="actual">
                         </div>
 
 
@@ -90,20 +93,46 @@
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/custom.css') }}">
+<link href="{{ asset('vendor/adminlte/dist/css/jquery.datetimepicker.min.css') }}" rel="stylesheet">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 @stop
 
 @section('js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script src="{{ asset('vendor/adminlte/dist/js/jquery.datetimepicker.full.min.js') }}"></script>
 <script>
     console.log('Hi!');
+    var errors = <?php if (isset($errors)) echo json_encode($errors); else echo json_encode([]); ?>;
     var metrics = <?php  if (isset($metrics)) echo json_encode($metrics); else echo json_encode([]); ?>;
+    var kpis = <?php if (isset($kpis)) echo json_encode($kpis); else echo json_encode([]); ?>;
     let dats = [];
 
+    if (errors.length > 0) {
+        console.log("length is greater than 0")
+        errors.forEach(error => {
+            alert(error['error'])
+        })
+    }
+
     metrics.forEach(metric => {
-        // console.log(metric);
-        dats.push([metric.metric_name, metric.metric_code, metric.metric_description, metric.metric_category,
-            metric.metric_type, metric.unit, metric.unit_symbol, metric.status
+        console.log(metric);
+        dats.push([metric.id, metric.metricName, metric.metricCode, metric.value, metric.comment, metric.metricType,
+            metric.metricEntryType, metric.status, metric.item_status, metric.entryDate
         ]);
     });
+
+    function handleSelChange() {
+        var slected_code = document.getElementById('metric-select').value;
+
+        kpis.forEach(kpi => {
+            if (kpi.metric_code == slected_code) {
+                document.getElementById('description').value = kpi.metric_description;
+                document.getElementById('metric_type').value = kpi.metric_type;
+                document.getElementById('metric_name').value = kpi.metric_name;
+                return;
+            }
+        });
+    }
 
     $(function() {
         metricTable = $('#table').DataTable({
@@ -114,28 +143,35 @@
                 'copy', 'csv', 'excel', 'pdf', 'print'
             ],
             columns: [{
-                    title: 'Metric Name'
+                    title: 'Id'
                 },
                 {
-                    title: 'Metric Code'
+                    title: 'Name'
                 },
                 {
-                    title: 'Metric Description'
+                    title: 'Code'
                 },
                 {
-                    title: 'Metric Category'
+                    title: 'Value'
                 },
                 {
-                    title: 'Metric Type'
+                    title: 'Description',
+                    width: "20%"
                 },
                 {
-                    title: 'Unit'
+                    title: 'Type'
                 },
                 {
-                    title: 'Unit Symbol'
+                    title: 'Entry Type'
                 },
                 {
                     title: 'Status'
+                },
+                {
+                    title: 'Item Status'
+                },
+                {
+                    title: 'Entry Date'
                 }
             ]
         });
@@ -149,14 +185,38 @@
                 $(this).addClass('selected');
             }
         });
+
+        $('#entry_type, #description, #status, #metric_type').focus(function(e) {
+            $(this).blur();
+        });
+
+        var logic = function (datetime, $input) {
+            $input.find('input:first').val(datetime.toLocaleString('ng-NG', {
+                hour12: false,
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit"
+            }).replace(',', ''))
+        };
+
+        var bindDatePicker = function() {
+            $(".date").datetimepicker({
+                maxDate: "+1d",
+                format:'DD/MM/YYYY HH:mm:ss',
+                icons: {
+                    time: "fa fa-clock-o",
+                    date: "fa fa-calendar",
+                    up: "fa fa-arrow-up",
+                    down: "fa fa-arrow-down"
+                },
+                onChangeDateTime:logic
+            });
+        }
+        
+        bindDatePicker();
     });
-
-
-    // const names = {
-    //         male:'KPAMSAR',
-    //         AGE:699
-    // };
-    // const jsonString = JSON.stringify(names);
-    // console.log(jsonString);
 </script>
 @stop

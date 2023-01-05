@@ -15,10 +15,13 @@ class CreateKpiTable extends Migration
     {
         Schema::create('kpi', function (Blueprint $table) {
             $table->id();
-            $table->string('kpi_code');
-            $table->string('kpi_name');
-            $table->string('description');
-            $table->string('kpi_category');
+            $table->string('metric_code');
+            $table->string('metric_name');
+            $table->string('metric_description');
+            $table->string('metric_category');
+            $table->string('metric_type');
+            $table->string('unit');
+            $table->string('unit_symbol');
             $table->string('status');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();

@@ -126,7 +126,8 @@
                     title: 'Value'
                 },
                 {
-                    title: 'Description'
+                    title: 'Description',
+                    width: "20%"
                 },
                 {
                     title: 'Type'
